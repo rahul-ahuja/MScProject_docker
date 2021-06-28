@@ -54,7 +54,7 @@ class FlaskTestCase(unittest.TestCase):
         self.assertIn(b'You need to login first.', response.data)
 
         # Ensure that logout page requires user login
-    def test_logout_route_requires_login(self):
+    def test_logout_route_requires_logout(self):
         tester = app.test_client()
         response = tester.get('/logout', follow_redirects=True)
         self.assertIn(b'You need to login first.', response.data)
