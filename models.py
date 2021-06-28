@@ -1,7 +1,11 @@
 import psycopg2
 
 #making connection to the postgres database
-conn = psycopg2.connect('host=db user=postgres password=mypassword')
+try:
+    conn = psycopg2.connect('host=localhost user=postgres password=mypassword')
+except:
+    conn = psycopg2.connect('host=db user=postgres password=mypassword')
+
 cur = conn.cursor()
 conn.set_session(autocommit=True)
 
