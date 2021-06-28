@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block title%}Displaying the proposals{% endblock %}
+{% block body %}
+
+<script>
+function confirm() {
+	alert('are you sure?');
+}
+
+</script>
+
+<script>
+{% if prop_row %}
+	
+		alert('You got proposals!');
+		
+	{%else%}
+	document.addEventListener('DOMContentLoaded', function(){
+		document.querySelector('h1').innerHTML = 'No proposals';
+		// document.querySelector('button').type = "button";
+		document.querySelector('#submit').disabled = true;
+
+	})
+		
+	
+{% endif %}
+
+</script>
+
+
+<h1 id="proposals">Proposals</h1>
+<form action="/proposals", method="post">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+{% for row in prop_row%}
+<p>{{ row }} 
+	<input type="radio" id = "accept" name="prop_id" value="{{ row }}">accept
+	<input type="radio" id = "decline" name="prop_id" value="decline">decline
+</p>
+
+{% endfor %}
+	
+<p><button class="btn btn-primary" id="submit" type="submit" onclick="confirm()">Done!</button></p>
+</form>
+
+{% endblock %}

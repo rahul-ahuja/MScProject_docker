@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1, width=device-width">
+	<title>{% block title %}{% endblock %}</title>
+	<link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+	{% block body %}{% endblock %}
+	
+	{%for message in get_flashed_messages() %}
+	{{message}}
+	{%endfor%}
+	</div>
+
+	
+</body>
+</html>

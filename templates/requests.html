@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block title%}Displaying the requests{% endblock %}
+{% block body %}
+
+<script>
+	document.addEventListener('DOMContentLoaded', function(){
+		document.querySelector('button').onclick = function(){
+			alert('Proposal sent!');
+
+		};
+
+	});
+
+</script>
+
+
+<h1>Here are the requests</h1>
+<form action="/requests", method="post">
+	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+	{% for id in req_id %}
+	<p><input type="radio" name="id" value="{{id}}">{{id}}</p>
+	{% endfor %}
+
+	<p><button class="btn btn-primary" type="submit">Interested!</button></p>
+</form>
+{% endblock %}

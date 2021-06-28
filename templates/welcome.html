@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<style>
+@keyframes grow{
+	from {
+		font-size: 20px;
+	}
+	to {
+		font-size: 75px;
+	}
+}
+
+h1 {
+	animation-name: grow;
+	animation-duration: 5s;
+	animation-fill-mode: forwards;
+}
+
+.center {
+ 		display: block;
+  		margin-left: auto;
+  		margin-right: auto;
+  		width: 50%;
+		}
+
+</style>
+<h1>Welcome {{name}}!</h1>
+<br>
+<h4 class="center">Make a request to meet</h4>
+<form action="/", method="post" class="center">
+	<p><input name="meal_type" type="text" placeholder="what you want to eat?" autocomplete="off" autofocus></p>
+	
+	<p><input name="location" type="text" placeholder="where you want to eat?" autocomplete="off" autofocus></p>
+	
+	<p>
+		<select name="time">
+			<option disabled selected value="">when do you want to eat?</option>
+			{% for time in times %}
+				<option value="{{time}}"> {{time}} </option>
+			{% endfor %}
+		</select>
+	</p>
+	<p><button class="btn btn-primary" type="submit">Make a request!</button></p>
+{% endblock %}
