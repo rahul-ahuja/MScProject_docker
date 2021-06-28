@@ -57,7 +57,7 @@ jobs:
               # a new PostgreSQL table.
       env:
           # The hostname used to communicate with the PostgreSQL service container
-        POSTGRES_HOST: localhost
+        POSTGRES_HOST: db
           # The default PostgreSQL port
         POSTGRES_PORT: 5432
       
