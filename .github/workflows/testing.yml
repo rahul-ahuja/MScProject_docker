@@ -19,7 +19,7 @@ jobs:
         python-version: [3.5, 3.6, 3.8]
     services:
       # Label used to access the service container
-      postgres:
+      db:
         # Docker Hub image
         image: postgres:latest
         # Provide the password for postgres
@@ -53,6 +53,6 @@ jobs:
         python -m pip install --upgrade pip 
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     ## Run all pytests by inovking the `pytest command`
-    - name: Test with pytest
+    - name: Unit Testing
       run: |
         python test_flaskr.py
