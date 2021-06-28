@@ -4,7 +4,13 @@ name: testing
 ## Set the trigger policy.
 ## In this case, the workflow is execute on a `push` event,
 ## or when a new commit is pushed to the repository
-on: push
+on:
+  push:
+    # Sequence of patterns matched against refs/heads
+    branches:    
+      # Push events on main branch
+      - main
+      - templates/welcome.html
 
 ## List the steps to be executed by the workflow
 jobs:
