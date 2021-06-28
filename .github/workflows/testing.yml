@@ -17,6 +17,22 @@ jobs:
     strategy:
       matrix:
         python-version: [3.5, 3.6, 3.8]
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres:latest
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_DB: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     ## Define a sequence of steps to be executed
     steps:
       ## Use the public `checkout` action  in version v2  
