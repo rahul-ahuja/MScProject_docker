@@ -152,6 +152,10 @@ def logout():
     flash('You were logged out.')
     return redirect(url_for('welcome'))
 
+@app.route('/test')
+def test_web():
+    return "<h1> testing </h1>"
+
 
 # start the server with the 'run()' method
 if __name__ == '__main__':
