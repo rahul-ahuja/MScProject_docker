@@ -33,7 +33,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-conn = psycopg2.connect('host=postgres user=postgres password=mypassword')
+conn = psycopg2.connect('host=localhost user=postgres password=mypassword')
 cur = conn.cursor()
 conn.set_session(autocommit=True)
 
