@@ -9,7 +9,7 @@ on: [push]
 ## List the steps to be executed by the workflow
 jobs:
   ## Set the name of the job
-  build tests:
+  tests:
     ## Configure the operating system the workflow should run on.
     ## In this case, the job on Ubuntu. Additionally, set a the job
     ## to execute on different Python versions 
@@ -66,7 +66,7 @@ jobs:
       run: |
         python test_flaskr.py
         
-  build:
+  dockerhubpush:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
