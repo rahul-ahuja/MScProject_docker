@@ -2,6 +2,7 @@ FROM python:3.8
 #FROM tiangolo/meinheld-gunicorn-flask:python3.7
 #FROM tiangolo/uwsgi-nginx-flask:python3.8
 COPY . /app
+COPY templates /app
 WORKDIR /app
 RUN pip install -r requirements.txt
 
