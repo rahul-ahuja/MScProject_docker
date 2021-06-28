@@ -27,6 +27,8 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: mypassword
           POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -55,7 +57,7 @@ jobs:
               # a new PostgreSQL table.
       env:
           # The hostname used to communicate with the PostgreSQL service container
-        POSTGRES_HOST: db
+        POSTGRES_HOST: localhost
           # The default PostgreSQL port
         POSTGRES_PORT: 5432
       
