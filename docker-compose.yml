@@ -7,7 +7,8 @@ services:
       - POSTGRES_PASSWORD=mypassword
       - POSTGRES_DB=postgres
   webapp:
-    build: .
+    #build: .
+    image: 785854/webapp:v1
     ports:
       - "5000:5000"
     volumes:
