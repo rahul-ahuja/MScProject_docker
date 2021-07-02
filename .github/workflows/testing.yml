@@ -52,7 +52,7 @@ jobs:
       ## Additionally, it ensures to loop through all 
       ## the defined Python versions.
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v2 #github action event to install python 
       with:
         python-version: ${{ matrix.python-version }}
     ## Install all necessary dependecies .
@@ -72,9 +72,11 @@ jobs:
     - name: Unit Testing
       run: |
         python test_flaskr.py
+      #referencing the existing codes with latest commits
     - name: Checkout
       uses: actions/checkout@v2
       
+      #creating the execution environment for the containers
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
       
@@ -88,10 +90,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
       
     - name: Build and push
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v2 #github action event
       with:
-        context: .
-        file: ./Dockerfile
+        context: . #main directory
+        file: ./Dockerfile #dockerfile from the main directory
         platforms: linux/amd64
         push: true
         tags: 785854/webapp:v1
