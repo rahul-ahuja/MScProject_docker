@@ -49,7 +49,7 @@ class FlaskTestCase(BaseTestCase):
         response = tester.get('/logout', follow_redirects=True)
         self.assertIn(b'You need to login first.', response.data)
 
-    def test_register_page(self):
+    def test_main_page(self):
         with self.client:
             self.client.post('/register', data=dict(username="xyz", password="xyz"), 
                 follow_redirects=True)
@@ -69,18 +69,20 @@ class FlaskTestCase(BaseTestCase):
 
     def test_proposal_page(self):
         with self.client:
+            self.client.post('/register', data=dict(username="xyz", password="xyz"), 
+                follow_redirects=True)
             self.client.post('/login', data=dict(username="xyz", password="xyz"), 
                 follow_redirects=True)
-            response = self.client.get('/proposals', follow_redirects=True)
+            response = self.client.get('/', follow_redirects=True)
             self.assertEqual(response.status_code, 200)
-            self.assertIn(b'Proposals', response.data)
+            self.assertIn(b'roposals', response.data)
 
     def test_request_insert(self):
         with self.client:
             self.client.post('/login', data=dict(username="xyz", password="xyz"),
                 follow_redirects=True)
             self.client.post('/', data=dict(location="pakistan", meal_type="biryani", 
-                time = "0:00", name="brian")
+                time = "0:00", name="xyz")
                 )
             welcome_response = self.client.get('/', follow_redirects=True)
             self.assertEqual(welcome_response.status_code, 200)
