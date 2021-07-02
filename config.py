@@ -4,7 +4,7 @@ class BaseConfig(object):
 	SECRET_KEY = 'my precious'
 
 class DevelopmentConfig(BaseConfig):
-	DEBUG = True
+	DEBUG = False
 
 class TestConfig(BaseConfig):
     DEBUG = True
