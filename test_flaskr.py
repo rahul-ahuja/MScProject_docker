@@ -73,7 +73,7 @@ class FlaskTestCase(BaseTestCase):
                 follow_redirects=True)
             self.client.post('/login', data=dict(username="xyz", password="xyz"), 
                 follow_redirects=True)
-            response = self.client.get('/', follow_redirects=True)
+            response = self.client.get('/proposals', follow_redirects=True)
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'roposals', response.data)
 
