@@ -5,6 +5,7 @@ class BaseConfig(object):
 
 class DevelopmentConfig(BaseConfig):
 	DEBUG = False
+	PRESERVE_CONTEXT_ON_EXCEPTION = False
 
 class TestConfig(BaseConfig):
     DEBUG = True
