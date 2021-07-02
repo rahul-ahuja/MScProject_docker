@@ -1,8 +1,8 @@
-from main import app
+from main import app, conn
 import unittest
 from flask_testing import TestCase
 
-'''
+
 class BaseTestCase(TestCase):
     """A base test case."""
 
@@ -10,18 +10,7 @@ class BaseTestCase(TestCase):
         app.config.from_object('config.TestConfig')
         return app
 
-    def setUp(self):
-        db.create_all()
-        db.session.add(BlogPost("Test post", "This is a test. Only a test."))
-        db.session.add(User("admin", "ad@min.com", "admin"))
-        db.session.commit()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-'''
-
-class FlaskTestCase(unittest.TestCase):
+class FlaskTestCase(BaseTestCase):
 
     # Ensure that Flask was set up correctly
     def test_index(self):
@@ -43,8 +32,8 @@ class FlaskTestCase(unittest.TestCase):
             data=dict(username="wrong", password="wrong"),
             follow_redirects=True
         )
-        #self.assertIn(b'Invalid Credentials. Please try again.', response.data)
-        self.assertIn(b'The CSRF token is missing', response.data)
+        self.assertIn(b'Invalid Credentials. Please try again.', response.data)
+        #self.assertIn(b'The CSRF token is missing', response.data)
 
 
         # Ensure that main page requires user login
@@ -58,6 +47,58 @@ class FlaskTestCase(unittest.TestCase):
         tester = app.test_client()
         response = tester.get('/logout', follow_redirects=True)
         self.assertIn(b'You need to login first.', response.data)
+
+    def test_register_page(self):
+        with self.client:
+            self.client.post('/register', data=dict(username="xyz", password="xyz"), 
+                follow_redirects=True)
+            self.client.post('/login', data=dict(username="xyz", password="xyz"), 
+                follow_redirects=True)
+            response = self.client.get('/', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'Welcome', response.data)
+
+    def test_main_page(self):
+        with self.client:
+            self.client.post('/login', data=dict(username="brian", password="brian"), 
+                follow_redirects=True)
+            response = self.client.get('/', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'Welcome', response.data)
+
+
+    def test_request_page(self):
+        with self.client:
+            self.client.post('/login', data=dict(username="brian", password="brian"), 
+                follow_redirects=True)
+            response = self.client.get('/requests', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'Here are the requests', response.data)
+
+    def test_proposal_page(self):
+        with self.client:
+            self.client.post('/login', data=dict(username="brian", password="brian"), 
+                follow_redirects=True)
+            response = self.client.get('/proposals', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'Proposals', response.data)
+
+    def test_request_insert(self):
+        with self.client:
+            self.client.post('/login', data=dict(username="brian", password="brian"),
+                follow_redirects=True)
+            self.client.post('/', data=dict(location="pakistan", meal_type="biryani", 
+                time = "0:00", name="brian")
+                )
+            welcome_response = self.client.get('/', follow_redirects=True)
+            self.assertEqual(welcome_response.status_code, 200)
+            request_response = self.client.get('/requests', follow_redirects=True)
+            self.assertEqual(request_response.status_code, 200)
+            self.assertIn(b'&#39;biryani&#39;, &#39;pakistan&#39', request_response.data)
+            cur = conn.cursor()
+            conn.set_session(autocommit=True)
+            cur.execute('''DELETE FROM cs_requests where location=(%s)''', ('pakistan', ))
+
 
 
 
