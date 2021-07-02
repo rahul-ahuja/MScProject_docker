@@ -59,15 +59,6 @@ class FlaskTestCase(BaseTestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'Welcome', response.data)
 
-    def test_main_page(self):
-        with self.client:
-            self.client.post('/login', data=dict(username="xyz", password="xyz"), 
-                follow_redirects=True)
-            response = self.client.get('/', follow_redirects=True)
-            self.assertEqual(response.status_code, 200)
-            self.assertIn(b'Welcome', response.data)
-
-
     def test_request_page(self):
         with self.client:
             self.client.post('/login', data=dict(username="xyz", password="xyz"), 
