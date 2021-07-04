@@ -18,7 +18,9 @@
 <form action="/requests", method="post">
 	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 	{% for id in req_id %}
-	<p><input type="radio" name="id" value="{{id}}">{{id}}</p>
+	<p><input type="radio" name="id" value="{{id}}">
+	{{id[1]}} wants to eat {{id[2]}} at {{id[3]}} around {{id[4]}}
+	</p>
 	{% endfor %}
 
 	<p><button class="btn btn-primary" type="submit">Interested!</button></p>
