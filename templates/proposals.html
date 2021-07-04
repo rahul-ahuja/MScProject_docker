@@ -32,7 +32,7 @@ function confirm() {
 <form action="/proposals", method="post">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 {% for row in prop_row%}
-<p>{{ row }} 
+<p>{{ row[0] }} wants to meet you at {{ row[1] }} around {{ row[3] }} to have {{ row[2] }} 
 	<input type="radio" id = "accept" name="prop_id" value="{{ row }}">accept
 	<input type="radio" id = "decline" name="prop_id" value="decline">decline
 </p>
