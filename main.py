@@ -141,8 +141,17 @@ def register():
 @login_required
 def proposals():
     name = session["user"]
-    cur.execute('''SELECT * FROM cs_proposals WHERE user_to = (%s)''', (name, ) )
+    cur.execute('''SELECT p.user_from, r.location, r.meal_type, r.meal_time, p.request_id FROM cs_proposals p
+    JOIN cs_requests r ON p.request_id = r.id WHERE user_to = (%s)''', (name, ) )
     prop_row = cur.fetchall()
+
+    if request.method == 'POST':
+        proposal_list = list(request.form['prop_id'].split(" "))
+        #decide = proposal_list[0]
+        req_id = proposal_list[-1][:-1]
+        cur.execute("DELETE FROM cs_proposals WHERE request_id = (%s)", (req_id, ) )
+        return redirect(url_for('welcome'))
+
     return render_template('proposals.html', prop_row = prop_row)
 
 @app.route('/logout')
