@@ -67,16 +67,6 @@ class FlaskTestCase(BaseTestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'Here are the requests', response.data)
 
-    def test_proposal_page(self):
-        with self.client:
-            self.client.post('/register', data=dict(username="xyz", password="xyz"), 
-                follow_redirects=True)
-            self.client.post('/login', data=dict(username="xyz", password="xyz"), 
-                follow_redirects=True)
-            response = self.client.get('/proposals', follow_redirects=True)
-            self.assertEqual(response.status_code, 200)
-            self.assertIn(b'roposals', response.data)
-
     def test_request_insert(self):
         with self.client:
             self.client.post('/login', data=dict(username="xyz", password="xyz"),
@@ -89,8 +79,25 @@ class FlaskTestCase(BaseTestCase):
             request_response = self.client.get('/requests', follow_redirects=True)
             self.assertEqual(request_response.status_code, 200)
             self.assertIn(b'&#39;biryani&#39;, &#39;pakistan&#39', request_response.data)
-            cur = conn.cursor()
-            conn.set_session(autocommit=True)
+
+
+    def test_proposal_insert(self):
+        cur = conn.cursor()
+        conn.set_session(autocommit=True)
+        cur.execute('''SELECT id FROM cs_requests WHERE username=(%s)''', ('xyz',))
+        request_id = cur.fetchone()
+        cur.execute('''INSERT INTO cs_proposals (request_id, user_to, user_from)
+            VALUES (%s, %s, %s)''', (request_id, 'xyz', 'xyz'))
+        cur.execute('''SELECT * FROM cs_proposals WHERE request_id = (%s)''', (request_id,))
+        row = cur.fetchone()
+        #print(row)
+        with self.client:
+            self.client.post('/login', data=dict(username="xyz", password="xyz"), 
+                follow_redirects=True)
+            response = self.client.get('/proposals', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'biryani', response.data)
+            cur.execute('''DELETE FROM cs_proposals where user_to=(%s)''', ('xyz', ))
             cur.execute('''DELETE FROM cs_requests where location=(%s)''', ('pakistan', ))
 
 
