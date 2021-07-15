@@ -66,6 +66,14 @@ class FlaskTestCase(BaseTestCase):
             response = self.client.get('/requests', follow_redirects=True)
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'Here are the requests', response.data)
+            
+    def test_proposal_page(self):
+        with self.client:
+            self.client.post('/login', data=dict(username="xyz", password="xyz"), 
+                follow_redirects=True)
+            response = self.client.get('/proposals', follow_redirects=True)
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b'No proposals', response.data)
 
     def test_request_insert(self):
         with self.client:
