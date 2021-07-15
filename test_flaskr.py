@@ -87,7 +87,7 @@ class FlaskTestCase(BaseTestCase):
         cur.execute('''SELECT id FROM cs_requests WHERE username=(%s)''', ('xyz',))
         request_id = cur.fetchone()
         cur.execute('''INSERT INTO cs_proposals (request_id, user_to, user_from)
-            VALUES (%s, %s, %s)''', (request_id, 'xyz', 'xyz'))
+            VALUES (%s, %s, %s, %s)''', ('1', request_id, 'xyz', 'xyz'))
         cur.execute('''SELECT * FROM cs_proposals WHERE request_id = (%s)''', (request_id,))
         row = cur.fetchone()
         #print(row)
