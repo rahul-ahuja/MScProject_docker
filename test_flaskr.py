@@ -86,6 +86,7 @@ class FlaskTestCase(BaseTestCase):
         conn.set_session(autocommit=True)
         cur.execute('''SELECT id FROM cs_requests WHERE username=(%s)''', ('xyz',))
         request_id = cur.fetchone()
+        print('debugg: ', request_id) 
         cur.execute('''INSERT INTO cs_proposals (id, request_id, user_to, user_from)
             VALUES (%s, %s, %s, %s)''', ('1', '1', 'xyz', 'xyz'))
         cur.execute('''SELECT * FROM cs_proposals WHERE request_id = (%s)''', (request_id,))
