@@ -82,17 +82,22 @@ class FlaskTestCase(BaseTestCase):
 
 
     def test_proposal_insert(self):
-        cur = conn.cursor()
-        conn.set_session(autocommit=True)
-        cur.execute('''SELECT id FROM cs_requests WHERE username=(%s)''', ('xyz',))
-        request_id = cur.fetchone()
-        print('debugg: ', request_id) 
-        cur.execute('''INSERT INTO cs_proposals (id, request_id, user_to, user_from)
-            VALUES (%s, %s, %s, %s)''', ('1', '1', 'xyz', 'xyz'))
-        cur.execute('''SELECT * FROM cs_proposals WHERE request_id = (%s)''', (request_id,))
-        row = cur.fetchone()
-        #print(row)
         with self.client:
+            self.client.post('/login', data=dict(username="xyz", password="xyz"),
+                follow_redirects=True)
+            self.client.post('/', data=dict(location="pakistan", meal_type="biryani", 
+                time = "0:00", name="xyz")
+                )
+
+            cur = conn.cursor()
+            conn.set_session(autocommit=True)
+            cur.execute('''SELECT id FROM cs_requests WHERE username=(%s)''', ('xyz',))
+            request_id = cur.fetchone()
+            cur.execute('''INSERT INTO cs_proposals (request_id, user_to, user_from)
+                VALUES (%s, %s, %s)''', (request_id, 'xyz', 'xyz'))
+            cur.execute('''SELECT * FROM cs_proposals WHERE request_id = (%s)''', (request_id,))
+            row = cur.fetchone()
+            print(row)
             self.client.post('/login', data=dict(username="xyz", password="xyz"), 
                 follow_redirects=True)
             response = self.client.get('/proposals', follow_redirects=True)
@@ -100,7 +105,7 @@ class FlaskTestCase(BaseTestCase):
             self.assertIn(b'biryani', response.data)
             cur.execute('''DELETE FROM cs_proposals where user_to=(%s)''', ('xyz', ))
             cur.execute('''DELETE FROM cs_requests where location=(%s)''', ('pakistan', ))
-
+            
 
 
 
