@@ -8,8 +8,8 @@ import random
 #sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 #sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 
-foursquare_client_id = "UBFXOYVRP5SDALZ4NAAVD51QPQ32G5MVOCQCVBM11KQVPPE5"
-foursquare_client_secret = "HV0R3PL2IDSVE20ZBAZJOVM3M4DP0QDCXMMWGOMOQNGG4BBS"
+foursquare_client_id = "placeholder"
+foursquare_client_secret = "placeholder"
 
 def findARestaurant(mealType,location):
 	#1. Use getGeocodeLocation to get the latitude and longitude coordinates of the location string.
