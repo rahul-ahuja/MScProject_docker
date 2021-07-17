@@ -8,7 +8,7 @@ import psycopg2
 from tempfile import mkdtemp
 from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
-
+from restuarant import findARestaurant
 
 # create the application object
 app = Flask(__name__)
@@ -115,6 +115,11 @@ def welcome():
         meal_type = request.form["meal_type"]
         time = request.form["time"]
         name = session["user"]
+        restuarant = findARestaurant(meal_type, location)
+        #print(restuarant)
+        if restuarant:
+            location = restuarant + ', ' + location
+
         cur.execute('''INSERT INTO cs_requests (username, meal_type, location, meal_time) 
             VALUES (%s, %s, %s, %s)''', (name, meal_type, location, time))
 
