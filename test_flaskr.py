@@ -86,7 +86,7 @@ class FlaskTestCase(BaseTestCase):
             self.assertEqual(welcome_response.status_code, 200)
             request_response = self.client.get('/requests', follow_redirects=True)
             self.assertEqual(request_response.status_code, 200)
-            self.assertIn(b'&#39;biryani&#39;, &#39;pakistan&#39', request_response.data)
+            self.assertIn(b'&#39;biryani&#39;, request_response.data)
 
 
     def test_proposal_insert(self):
