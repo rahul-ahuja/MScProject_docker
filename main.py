@@ -177,7 +177,7 @@ def logout():
 
 @app.route('/test')
 def test_web():
-    return "<h1> testing again 2 </h1>"
+    return "<h1> testing again </h1>"
 
 
 # start the server with the 'run()' method
