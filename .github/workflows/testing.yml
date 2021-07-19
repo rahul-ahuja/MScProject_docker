@@ -74,7 +74,7 @@ jobs:
       #referencing the existing codes with latest commits
     - name: Checkout
       uses: actions/checkout@v2
-      with:
+      env:
         POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           
