@@ -99,11 +99,11 @@ class FlaskTestCase(BaseTestCase):
 
             cur = conn.cursor()
             conn.set_session(autocommit=True)
-            cur.execute('''SELECT id FROM cs_requests WHERE username=(%s)''', ('xyz',))
+            cur.execute('''SELECT id FROM requests WHERE username=(%s)''', ('xyz',))
             request_id = cur.fetchone()
-            cur.execute('''INSERT INTO cs_proposals (request_id, user_to, user_from)
+            cur.execute('''INSERT INTO proposals (request_id, user_to, user_from)
                 VALUES (%s, %s, %s)''', (request_id, 'xyz', 'xyz'))
-            cur.execute('''SELECT * FROM cs_proposals WHERE request_id = (%s)''', (request_id,))
+            cur.execute('''SELECT * FROM proposals WHERE request_id = (%s)''', (request_id,))
             row = cur.fetchone()
             print(row)
             self.client.post('/login', data=dict(username="xyz", password="xyz"), 
@@ -111,8 +111,8 @@ class FlaskTestCase(BaseTestCase):
             response = self.client.get('/proposals', follow_redirects=True)
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'biryani', response.data)
-            cur.execute('''DELETE FROM cs_proposals where user_to=(%s)''', ('xyz', ))
-            cur.execute('''DELETE FROM cs_requests where location=(%s)''', ('pakistan', ))
+            cur.execute('''DELETE FROM proposals where user_to=(%s)''', ('xyz', ))
+            cur.execute('''DELETE FROM requests where location=(%s)''', ('pakistan', ))
             
 
 
