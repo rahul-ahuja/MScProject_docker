@@ -10,7 +10,6 @@ on:
     branches:    
       # Push events on main branch
       - main
-      - templates/welcome.html
 
 ## List the steps to be executed by the workflow
 jobs:
@@ -31,7 +30,7 @@ jobs:
         image: postgres:latest
         # Provide the password for postgres
         env:
-          POSTGRES_USER: postgres
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: mypassword
           POSTGRES_DB: postgres
         ports:
