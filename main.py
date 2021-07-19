@@ -16,8 +16,12 @@ app = Flask(__name__)
 # config
 #app.secret_key = 'my precious'
 app.config.from_object('config.DevelopmentConfig')
+app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql+psycopg2://postgres:mypassword@/postgres?host=localhost'
 
 csrf = CSRFProtect(app)
+
+# create the sqlalchemy object
+db = SQLAlchemy(app)
 
 # Ensure responses aren't cached
 @app.after_request
@@ -64,17 +68,17 @@ def requests():
         request_id = request.form['id']
         request_id = int(list(request_id)[1])
 
-        cur.execute('''SELECT * FROM cs_requests WHERE id = (%s)''', (request_id, ))
+        cur.execute('''SELECT * FROM requests WHERE id = (%s)''', (request_id, ))
         row = cur.fetchone()
         print(row)
-        cur.execute('''INSERT INTO cs_proposals (request_id, user_to, user_from)
+        cur.execute('''INSERT INTO proposals (request_id, user_to, user_from)
             VALUES (%s, %s, %s)''', (request_id, row[1], name))
 
         return redirect(url_for('welcome'))
 
 
 
-    cur.execute('''SELECT * FROM cs_requests''')
+    cur.execute('''SELECT * FROM requests''')
     req_id = cur.fetchall()
     #print(req_id)
     #API integration
@@ -93,7 +97,7 @@ def login():
     if request.method == 'POST':
         name = request.form['username']
         password = request.form['password']
-        cur.execute('''SELECT * FROM cs_users WHERE username = (%s)''', (name, ))
+        cur.execute('''SELECT * FROM users WHERE username = (%s)''', (name, ))
         row = cur.fetchall()
         print(row)
         if len(row) != 1 or not check_password_hash(row[0][1], password):
@@ -120,7 +124,7 @@ def welcome():
         #if restuarant:
         #    location = restuarant + ', ' + location
 
-        cur.execute('''INSERT INTO cs_requests (username, meal_type, location, meal_time) 
+        cur.execute('''INSERT INTO requests (username, meal_type, location, meal_time) 
             VALUES (%s, %s, %s, %s)''', (name, meal_type, location, time))
 
     return render_template('welcome.html', name=name, times=times)
@@ -133,12 +137,12 @@ def register():
         # Query database for username
         name = request.form['username']
         password = request.form['password']
-        cur.execute('''SELECT username FROM cs_users WHERE username = (%s)''', (name, ))
+        cur.execute('''SELECT username FROM users WHERE username = (%s)''', (name, ))
         row = cur.fetchall()
         if len(name) == 0 or len(row) > 0:
             error = "the user’s input is blank or the username already exists"
         else:
-            cur.execute("INSERT INTO cs_users (username, hash) VALUES (%s, %s)", (name, generate_password_hash(password)))
+            cur.execute("INSERT INTO users (username, hash) VALUES (%s, %s)", (name, generate_password_hash(password)))
     return render_template("register.html", error=error)
 
 
@@ -146,15 +150,15 @@ def register():
 @login_required
 def proposals():
     name = session["user"]
-    cur.execute('''SELECT p.user_from, r.location, r.meal_type, r.meal_time, p.request_id FROM cs_proposals p
-    JOIN cs_requests r ON p.request_id = r.id WHERE user_to = (%s)''', (name, ) )
+    cur.execute('''SELECT p.user_from, r.location, r.meal_type, r.meal_time, p.request_id FROM proposals p
+    JOIN requests r ON p.request_id = r.id WHERE user_to = (%s)''', (name, ) )
     prop_row = cur.fetchall()
 
     if request.method == 'POST':
         proposal_list = list(request.form['prop_id'].split(" "))
         #decide = proposal_list[0]
         req_id = proposal_list[-1][:-1]
-        cur.execute("DELETE FROM cs_proposals WHERE request_id = (%s)", (req_id, ) )
+        cur.execute("DELETE FROM proposals WHERE request_id = (%s)", (req_id, ) )
         return redirect(url_for('welcome'))
 
     return render_template('proposals.html', prop_row = prop_row)
