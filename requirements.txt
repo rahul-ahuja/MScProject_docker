@@ -7,3 +7,4 @@ Flask-WTF
 psycopg2
 Flask-Testing
 httplib2
+Flask-SQLAlchemy
