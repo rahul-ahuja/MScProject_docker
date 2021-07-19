@@ -8,6 +8,7 @@ import psycopg2
 from tempfile import mkdtemp
 from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
+from flask_sqlalchemy import SQLAlchemy
 #from restuarant import findARestaurant
 
 # create the application object
