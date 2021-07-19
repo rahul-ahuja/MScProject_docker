@@ -38,10 +38,14 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+postgres_pwd = ${{ secrets.POSTGRES_PASSWORD }}
+postgres_user = ${{ secrets.POSTGRES_USER }}
+#making connection to the postgres database
 try:
-    conn = psycopg2.connect('host=localhost user=postgres password=mypassword')
+    conn = psycopg2.connect(f'host=localhost user={postgres_user} password={postgres_pwd}')
 except:
-    conn = psycopg2.connect('host=db user=postgres password=mypassword')
+    conn = psycopg2.connect(f'host=db user={postgres_user} password={postgres_pwd}')
+
 cur = conn.cursor()
 conn.set_session(autocommit=True)
 
