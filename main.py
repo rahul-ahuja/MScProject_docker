@@ -17,7 +17,6 @@ app = Flask(__name__)
 # config
 #app.secret_key = 'my precious'
 app.config.from_object('config.DevelopmentConfig')
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql+psycopg2://postgres:mypassword@/postgres?host=localhost'
 
 csrf = CSRFProtect(app)
 
@@ -38,8 +37,11 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-postgres_pwd = 'mypassword'
-postgres_user = 'postgres'
+postgres_pwd = os.environ['POSTGRES_PASSWORD']
+postgres_user = os.environ['POSTGRES_USER']
+
+app.config["SQLALCHEMY_DATABASE_URI"] = f'postgresql+psycopg2://{postgres_user}:{postgres_pwd}@/postgres?host=localhost'
+
 #making connection to the postgres database
 try:
     conn = psycopg2.connect(f'host=localhost user={postgres_user} password={postgres_pwd}')
