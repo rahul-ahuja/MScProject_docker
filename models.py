@@ -3,7 +3,7 @@ from main import db
 from flask_sqlalchemy import SQLAlchemy
 
 
-'''
+
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -33,7 +33,7 @@ class Proposal(db.Model):
     
 
 db.create_all()
-'''
+
 
 
 ###below is deprecated
@@ -41,13 +41,13 @@ db.create_all()
 
 
 #making connection to the postgres database
-try:
-    conn = psycopg2.connect('host=localhost user=postgres password=mypassword')
-except:
-    conn = psycopg2.connect('host=db user=postgres password=mypassword')
+#try:
+#    conn = psycopg2.connect('host=localhost user=postgres password=mypassword')
+#except:
+#    conn = psycopg2.connect('host=db user=postgres password=mypassword')
 
-cur = conn.cursor()
-conn.set_session(autocommit=True)
+#cur = conn.cursor()
+#conn.set_session(autocommit=True)
 
 #making user the table with same does not exists
 
@@ -56,35 +56,35 @@ conn.set_session(autocommit=True)
 #cur.execute('''DROP TABLE IF EXISTS users''')
 
 #creating users tables in the schema
-cur.execute('''CREATE TABLE IF NOT EXISTS users (username TEXT NOT NULL PRIMARY KEY,
-    hash TEXT NOT NULL)''')
+#cur.execute('''CREATE TABLE IF NOT EXISTS users (username TEXT NOT NULL PRIMARY KEY,
+#    hash TEXT NOT NULL)''')
 
 #creating request tables in the schema
-cur.execute('''CREATE TABLE IF NOT EXISTS requests (id SERIAL PRIMARY KEY,
-        username TEXT NOT NULL,
-        meal_type TEXT NOT NULL,
-        location TEXT NOT NULL,
-        meal_time time without time zone)''')
+#cur.execute('''CREATE TABLE IF NOT EXISTS requests (id SERIAL PRIMARY KEY,
+#        username TEXT NOT NULL,
+#        meal_type TEXT NOT NULL,
+#        location TEXT NOT NULL,
+#        meal_time time without time zone)''')
 
 
 #creating proposals tables in the schema
-cur.execute('''CREATE TABLE IF NOT EXISTS proposals (id SERIAL PRIMARY KEY,
-        request_id INTEGER NOT NULL,
-        user_to TEXT NOT NULL,
-        user_from TEXT NOT NULL)''')
+#cur.execute('''CREATE TABLE IF NOT EXISTS proposals (id SERIAL PRIMARY KEY,
+#        request_id INTEGER NOT NULL,
+#        user_to TEXT NOT NULL,
+#        user_from TEXT NOT NULL)''')
 
 
 
-cur.execute('''ALTER TABLE requests ADD CONSTRAINT fk_requests 
-        FOREIGN KEY (username) REFERENCES users(username)''')
+#cur.execute('''ALTER TABLE requests ADD CONSTRAINT fk_requests 
+#        FOREIGN KEY (username) REFERENCES users(username)''')
 
-cur.execute('''ALTER TABLE proposals ADD CONSTRAINT fk_proposals 
-        FOREIGN KEY (request_id) REFERENCES requests(id)''')
+#cur.execute('''ALTER TABLE proposals ADD CONSTRAINT fk_proposals 
+#        FOREIGN KEY (request_id) REFERENCES requests(id)''')
 
-cur.execute('''ALTER TABLE proposals ADD CONSTRAINT fk_proposals_userto 
-        FOREIGN KEY (user_to) REFERENCES users(username)''')
+#cur.execute('''ALTER TABLE proposals ADD CONSTRAINT fk_proposals_userto 
+#        FOREIGN KEY (user_to) REFERENCES users(username)''')
 
-cur.execute('''ALTER TABLE proposals ADD CONSTRAINT fk_proposals_userfrom 
-        FOREIGN KEY (user_from) REFERENCES users(username)''')
+#cur.execute('''ALTER TABLE proposals ADD CONSTRAINT fk_proposals_userfrom 
+#        FOREIGN KEY (user_from) REFERENCES users(username)''')
 
-conn.close() #closing the database connection
+#conn.close() #closing the database connection
