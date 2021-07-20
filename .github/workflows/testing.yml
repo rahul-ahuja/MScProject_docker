@@ -69,14 +69,15 @@ jobs:
       
     ## Run all pytests by inovking the `pytest command`
     - name: Unit Testing
-      run: |
-        python test_flaskr.py
-      #referencing the existing codes with latest commits
-    - name: Checkout
-      uses: actions/checkout@v2
       env:
         POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      run: |
+        python test_flaskr.py
+        
+      #referencing the existing codes with latest commits
+    - name: Checkout
+      uses: actions/checkout@v2
           
       
       #creating the execution environment for the containers
