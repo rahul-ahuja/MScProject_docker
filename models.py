@@ -49,7 +49,7 @@ except:
 cur = conn.cursor()
 conn.set_session(autocommit=True)
 
-making user the table with same does not exists
+#making user the table with same does not exists
 
 cur.execute('''DROP TABLE IF EXISTS proposals''')
 cur.execute('''DROP TABLE IF EXISTS requests''')
