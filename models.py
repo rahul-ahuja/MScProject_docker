@@ -40,7 +40,7 @@ db.create_all()
 
 
 
-making connection to the postgres database
+#making connection to the postgres database
 try:
     conn = psycopg2.connect('host=localhost user=postgres password=mypassword')
 except:
