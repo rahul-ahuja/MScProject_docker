@@ -51,9 +51,9 @@ conn.set_session(autocommit=True)
 
 #making user the table with same does not exists
 
-cur.execute('''DROP TABLE IF EXISTS proposals''')
-cur.execute('''DROP TABLE IF EXISTS requests''')
-cur.execute('''DROP TABLE IF EXISTS users''')
+#cur.execute('''DROP TABLE IF EXISTS proposals''')
+#cur.execute('''DROP TABLE IF EXISTS requests''')
+#cur.execute('''DROP TABLE IF EXISTS users''')
 
 #creating users tables in the schema
 cur.execute('''CREATE TABLE IF NOT EXISTS users (username TEXT NOT NULL PRIMARY KEY,
