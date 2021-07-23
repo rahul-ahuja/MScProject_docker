@@ -30,6 +30,7 @@
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
   <input type="text" placeholder="Username" name="username" value="{{request.form.username }}">
   <input id="password" type="password" placeholder="Password" name="password" value="{{request.form.password }}">
+  {{recaptcha}}
   <input class="btn btn-default" id="submit" type="submit" value="Login">
 </form>
 
