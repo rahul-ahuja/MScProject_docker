@@ -3,8 +3,8 @@ Jinja2==2.10.1
 MarkupSafe==0.23
 Werkzeug==0.16.1
 Flask-Session
-Flask-WTF
 psycopg2
 Flask-Testing
 httplib2
 Flask-SQLAlchemy
+Flask-reCaptcha
