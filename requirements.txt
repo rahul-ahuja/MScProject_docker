@@ -8,3 +8,4 @@ Flask-Testing
 httplib2
 Flask-SQLAlchemy
 Flask-reCaptcha
+Flask-WTF
