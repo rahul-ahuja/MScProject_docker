@@ -9,6 +9,7 @@ from tempfile import mkdtemp
 from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
+from flask_recaptcha import ReCaptcha # Import ReCaptcha object
 #from restuarant import findARestaurant
 
 # create the application object
@@ -19,6 +20,11 @@ app = Flask(__name__)
 app.config.from_object('config.DevelopmentConfig')
 
 csrf = CSRFProtect(app)
+
+app.config['RECAPTCHA_SITE_KEY'] = '6LcUqbQbAAAAAHR76HkGtKe_BG6i_7rKloEGeOm5' # <-- Add your site key
+app.config['RECAPTCHA_SECRET_KEY'] = '6LcUqbQbAAAAAGJ-HKoPiadnbsXm8d5oEX2NvYJf' # <-- Add your secret key
+recaptcha = ReCaptcha(app) # Create a ReCaptcha object by passing in 'app' as parameter
+
 
 # create the sqlalchemy object
 db = SQLAlchemy(app)
@@ -113,7 +119,9 @@ def login():
         else:
             session["user"] = row[0][0]
             flash('You were logged in.')
-            return redirect(url_for('welcome'))
+            if recaptcha.verify():
+                return redirect(url_for('welcome'))
+#            return redirect(url_for('welcome'))
     return render_template('login.html', error=error)
 
 @app.route('/', methods=["GET", "POST"])
