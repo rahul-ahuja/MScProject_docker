@@ -9,4 +9,4 @@ EXPOSE 5000
 
 # command to run on container start
 
-CMD python models.py ; python main.py
+CMD python models.py ; python roles_setup.py ; python main.py
