@@ -11,6 +11,9 @@ from flask_wtf.csrf import CSRFProtect
 from flask_sqlalchemy import SQLAlchemy
 from flask_recaptcha import ReCaptcha # Import ReCaptcha object
 #from restuarant import findARestaurant
+from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
+import time
+
 
 # create the application object
 app = Flask(__name__)
@@ -50,9 +53,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f'postgresql+psycopg2://{postgres_user}:
 
 #making connection to the postgres database
 try:
-    conn = psycopg2.connect(f'host=localhost user={postgres_user} password={postgres_pwd}')
+    #conn = psycopg2.connect(f'host=localhost user={postgres_user} password={postgres_pwd}')
+    conn = psycopg2.connect('host=localhost dbname=postgres user=developer password=dev_pswd')
 except:
-    conn = psycopg2.connect(f'host=db user={postgres_user} password={postgres_pwd}')
+    #conn = psycopg2.connect(f'host=db user={postgres_user} password={postgres_pwd}')
+    conn = psycopg2.connect('host=db dbname=postgres user=developer password=dev_pswd')
 
 
 cur = conn.cursor()
@@ -186,9 +191,19 @@ def logout():
     flash('You were logged out.')
     return redirect(url_for('welcome'))
 
-@app.route('/test')
-def test_web():
-    return "<h1> testing again </h1>"
+def errorhandler(e):
+    """Handle error"""
+    if not isinstance(e, HTTPException):
+        e = InternalServerError()
+    return jsonify(
+        {'message': e.name, 
+        'error':e.code,
+        'success': False})
+
+
+# Listen for errors
+for code in default_exceptions:
+    app.errorhandler(code)(errorhandler)
 
 
 # start the server with the 'run()' method
