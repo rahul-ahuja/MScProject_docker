@@ -53,11 +53,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f'postgresql+psycopg2://{postgres_user}:
 
 #making connection to the postgres database
 try:
-    #conn = psycopg2.connect(f'host=localhost user={postgres_user} password={postgres_pwd}')
-    conn = psycopg2.connect("host=localhost dbname=postgres user=developer password='dev_pswd'")
+    conn = psycopg2.connect(f'host=localhost user={postgres_user} password={postgres_pwd}')
+    #conn = psycopg2.connect("host=localhost dbname=postgres user=developer password='dev_pswd'")
 except:
-    #conn = psycopg2.connect(f'host=db user={postgres_user} password={postgres_pwd}')
-    conn = psycopg2.connect("host=db dbname=postgres user=developer password='dev_pswd'")
+    conn = psycopg2.connect(f'host=db user={postgres_user} password={postgres_pwd}')
+    #conn = psycopg2.connect("host=db dbname=postgres user=developer password='dev_pswd'")
 
 
 cur = conn.cursor()
