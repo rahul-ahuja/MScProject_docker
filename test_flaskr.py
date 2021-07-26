@@ -118,30 +118,4 @@ class FlaskTestCase(BaseTestCase):
 
 
 if __name__ == '__main__':
-    cur = conn.cursor()
-    conn.set_session(autocommit=True)
-
-    #creating a role for role-based policy
-    try:
-            cur.execute('''CREATE ROLE readwrite''')
-    except:
-            print('Role already created')
-
-
-
-    cur.execute('''GRANT CONNECT ON DATABASE postgres TO readwrite''')
-    cur.execute('''GRANT SELECT, INSERT, UPDATE ON TABLE users TO readwrite''')
-    cur.execute('''GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE requests TO readwrite''')
-    cur.execute('''GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE proposals TO readwrite''')
-    cur.execute('''GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO readwrite''')
-    cur.execute('''GRANT USAGE ON SCHEMA public TO readwrite''')
-
-    #assigning the role to the user called developer4 who will work on the main application
-    try:
-            cur.execute("CREATE USER developer WITH PASSWORD 'dev_pswd'")
-    except:
-            print('User already created')
-
-    cur.execute('''GRANT readwrite TO developer''')
-
     unittest.main()
