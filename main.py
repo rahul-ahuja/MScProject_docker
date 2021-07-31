@@ -61,7 +61,7 @@ except:
 
 
 cur = conn.cursor()
-conn.set_session(autocommit=True)
+#conn.set_session(autocommit=True)
 
 times = [str(t)+':00' for t in range(25)] #this needs to be global list variable
 
@@ -92,7 +92,7 @@ def requests():
         print(row)
         cur.execute('''INSERT INTO proposals (request_id, user_to, user_from)
             VALUES (%s, %s, %s)''', (request_id, row[1], name))
-
+        conn.commit()
         return redirect(url_for('welcome'))
 
 
@@ -147,6 +147,8 @@ def welcome():
 
         cur.execute('''INSERT INTO requests (username, meal_type, location, meal_time) 
             VALUES (%s, %s, %s, %s)''', (name, meal_type, location, time))
+        
+        conn.commit()
 
     return render_template('welcome.html', name=name, times=times)
 
@@ -164,6 +166,7 @@ def register():
             error = "the user’s input is blank or the username already exists"
         else:
             cur.execute("INSERT INTO users (username, hash) VALUES (%s, %s)", (name, generate_password_hash(password)))
+        conn.commit()
     return render_template("register.html", error=error)
 
 
@@ -181,7 +184,7 @@ def proposals():
         req_id = proposal_list[-1][:-1]
         cur.execute("DELETE FROM proposals WHERE request_id = (%s)", (req_id, ) )
         return redirect(url_for('welcome'))
-
+        conn.commit()
     return render_template('proposals.html', prop_row = prop_row)
 
 @app.route('/logout')
