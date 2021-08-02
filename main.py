@@ -54,11 +54,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f'postgresql+psycopg2://{postgres_user}:
 
 #making connection to the postgres database
 try:
-    postgreSQL_pool = psycopg2.pool.SimpleConnectionPool(f'1, 20, user={postgres_user},
-                                                         password={postgres_pwd},
+    postgreSQL_pool = psycopg2.pool.SimpleConnectionPool(1, 20, user=f'{postgres_user}',
+                                                         password=f'{postgres_pwd}',
                                                          host="localhost",
                                                          port="5432",
-                                                         database="postgres"')
+                                                         database="postgres")
     conn = postgreSQL_pool.getconn()
     #conn = psycopg2.connect(f'host=localhost user={postgres_user} password={postgres_pwd}')
     #conn = psycopg2.connect("host=localhost dbname=postgres user=developer password='dev_pswd'")
