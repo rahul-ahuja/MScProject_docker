@@ -48,16 +48,35 @@ class FlaskTestCase(BaseTestCase):
         tester = app.test_client()
         response = tester.get('/logout', follow_redirects=True)
         self.assertIn(b'You need to login first.', response.data)
+        self.assertEqual(response.status_code, 200)
+        
+        # Ensure that logout page requires user login
+    def test_register_route(self):
+        tester = app.test_client()
+        register_response = tester.get('/register', follow_redirects=True)
+        self.assertIn(b'Please Register', register_response.data)
+        self.assertEqual(register_response.status_code, 200)
+
 
     def test_main_page(self):
         with self.client:
             self.client.post('/register', data=dict(username="xyz", password="xyz"), 
                 follow_redirects=True)
-            self.client.post('/login', data=dict(username="xyz", password="xyz"), 
+            post_response = self.client.post('/login', data=dict(username="xyz", password="xyz"), 
                 follow_redirects=True)
+            self.assertEqual(post_response.status_code, 200)
             response = self.client.get('/', follow_redirects=True)
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'Welcome', response.data)
+            
+     def test_logout_redirect(self):
+        with self.client:
+            self.client.post('/login', data=dict(username="xyz", password="xyz"), 
+                follow_redirects=True)
+            self.client.get('/logout', follow_redirects=True)
+            login_response = self.client.get('/', follow_redirects=True)
+            self.assertIn(b'You need to login first.', login_response.data)
+
 
     def test_request_page(self):
         with self.client:
