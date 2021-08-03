@@ -69,7 +69,7 @@ class FlaskTestCase(BaseTestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn(b'Welcome', response.data)
             
-     def test_logout_redirect(self):
+    def test_logout_redirect(self):
         with self.client:
             self.client.post('/login', data=dict(username="xyz", password="xyz"), 
                 follow_redirects=True)
