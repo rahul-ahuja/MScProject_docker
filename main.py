@@ -71,7 +71,7 @@ except:
 
 
 cur = conn.cursor()
-#conn.set_session(autocommit=True)
+conn.set_session(autocommit=True)
 
 times = [str(t)+':00' for t in range(25)] #this needs to be global list variable
 
