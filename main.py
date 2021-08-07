@@ -80,13 +80,13 @@ def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
         if session.get("user"):
-            app.logger.debug(pformat(request.headers))
+            
             return f(*args, **kwargs)
         else:
             flash('You need to login first.')
-            app.logger.debug(pformat(request.headers))
+            
             return redirect(url_for('login'))
-    app.logger.debug(pformat(request.headers))
+    
     return wrap
 
 
@@ -105,8 +105,6 @@ def requests():
         #print(row)
         cur.execute('''INSERT INTO proposals (request_id, user_to, user_from)
             VALUES (%s, %s, %s)''', (request_id, row[1], name))
-        conn.commit()
-        app.logger.debug(pformat(request.headers))
         return redirect(url_for('welcome'))
 
 
@@ -120,7 +118,6 @@ def requests():
 
     #req_id = Request.query.all()#db.session.query(Request).all()
     #return render_template('requests.html', meal_type=meal_type, location=location, time=time)
-    app.logger.debug(pformat(request.headers))
     return render_template('requests.html', req_id=req_id)
 
 
@@ -140,10 +137,8 @@ def login():
             session["user"] = row[0][0]
             flash('You were logged in.')
             if recaptcha.verify():
-                app.logger.debug(pformat(request.headers))
                 return redirect(url_for('welcome'))
 #            return redirect(url_for('welcome'))
-    app.logger.debug(pformat(request.headers))
     return render_template('login.html', error=error)
 
 @app.route('/', methods=["GET", "POST"])
@@ -165,9 +160,7 @@ def welcome():
         cur.execute('''INSERT INTO requests (username, meal_type, location, meal_time) 
             VALUES (%s, %s, %s, %s)''', (name, meal_type, location, time))
         
-        #conn.commit()
-        app.logger.debug(pformat(request.headers))
-    app.logger.debug(pformat(request.headers))
+        
     return render_template('welcome.html', name=name, times=times)
 
 @app.route("/register", methods=["GET", "POST"])
@@ -184,9 +177,7 @@ def register():
             error = "the user’s input is blank or the username already exists"
         else:
             cur.execute("INSERT INTO users (username, hash) VALUES (%s, %s)", (name, generate_password_hash(password)))
-        #conn.commit()
-        app.logger.debug(pformat(request.headers))
-    app.logger.debug(pformat(request.headers))    
+            
     return render_template("register.html", error=error)
 
 
@@ -203,10 +194,8 @@ def proposals():
         #decide = proposal_list[0]
         req_id = proposal_list[-1][:-1]
         cur.execute("DELETE FROM proposals WHERE request_id = (%s)", (req_id, ) )
-        app.logger.debug(pformat(request.headers))
         return redirect(url_for('welcome'))
-        #conn.commit()
-    app.logger.debug(pformat(request.headers))
+        
     return render_template('proposals.html', prop_row = prop_row)
 
 @app.route('/logout')
@@ -214,7 +203,6 @@ def proposals():
 def logout():
     session.clear()
     flash('You were logged out.')
-    app.logger.debug(pformat(request.headers))
     return redirect(url_for('welcome'))
 
 def errorhandler(e):
@@ -234,5 +222,4 @@ for code in default_exceptions:
 
 # start the server with the 'run()' method
 if __name__ == '__main__':
-    logging.basicConfig(filename='app.log', level=logging.DEBUG)
     app.run(debug=True, host='0.0.0.0')
