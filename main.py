@@ -28,8 +28,8 @@ app.config.from_object('config.DevelopmentConfig')
 
 csrf = CSRFProtect(app)
 
-app.config['RECAPTCHA_SITE_KEY'] = '6LcUqbQbAAAAAHR76HkGtKe_BG6i_7rKloEGeOm5' # <-- Add your site key
-app.config['RECAPTCHA_SECRET_KEY'] = '6LcUqbQbAAAAAGJ-HKoPiadnbsXm8d5oEX2NvYJf' # <-- Add your secret key
+app.config['RECAPTCHA_SITE_KEY'] = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' # <-- Add your site key
+app.config['RECAPTCHA_SECRET_KEY'] = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe' # <-- Add your secret key
 recaptcha = ReCaptcha(app) # Create a ReCaptcha object by passing in 'app' as parameter
 
 
