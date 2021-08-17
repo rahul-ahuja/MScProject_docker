@@ -125,19 +125,20 @@ def requests():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    if request.method == 'POST' and recaptcha.verify():
-        name = request.form['username']
-        password = request.form['password']
-        cur.execute('''SELECT * FROM users WHERE username = (%s)''', (name, ))
-        row = cur.fetchall()
-        #print(row)
-        if len(row) != 1 or not check_password_hash(row[0][1], password):
-            error = 'Invalid Credentials. Please try again.'
-        else:
-            session["user"] = row[0][0]
-            flash('You were logged in.')
-            #if recaptcha.verify():
-            return redirect(url_for('welcome'))
+    if recaptcha.verify():
+        if request.method == 'POST':
+            name = request.form['username']
+            password = request.form['password']
+            cur.execute('''SELECT * FROM users WHERE username = (%s)''', (name, ))
+            row = cur.fetchall()
+            #print(row)
+            if len(row) != 1 or not check_password_hash(row[0][1], password):
+                error = 'Invalid Credentials. Please try again.'
+            else:
+                session["user"] = row[0][0]
+                flash('You were logged in.')
+                #if recaptcha.verify():
+                return redirect(url_for('welcome'))
 #            return redirect(url_for('welcome'))
     return render_template('login.html', error=error)
 
