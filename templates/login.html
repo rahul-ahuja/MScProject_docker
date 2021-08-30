@@ -2,6 +2,32 @@
 {% block content %}
 
 
+<style type="text/css">
+  h1
+  {
+    font-size: 100px;
+    color : black;
+    font-style: italic;
+    font-weight: bold;
+    text-shadow: 0 0 3px, 0 0 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+  }
+  form
+  {
+  padding: 40px;
+  background-color: white;
+  margin: auto;
+  margin-top: 100px;
+  width: 400px;
+  font-size: 18px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 8px 5px rgba(0, 0, 0, .4);
+  min-height: 100px;
+  }
+</style>
+
+
 <script>
   document.addEventListener('DOMContentLoaded', function(){
     // select the submit button and password to be used later
@@ -24,7 +50,8 @@
   });
 </script>
 
-<h1>Please login as a beta-user-v1</h1>
+
+<h1>Please login</h1>
 <br>
 <form action="" method="post">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
