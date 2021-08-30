@@ -2,6 +2,26 @@
 {% block title%}Displaying the proposals{% endblock %}
 {% block body %}
 
+<style type="text/css">
+	
+	.container input 
+	{
+  		cursor: pointer;	
+	}
+
+
+
+	p
+	{
+		font-style: italic;
+		color: black;
+	}
+
+	h1{
+		font-weight: bold;
+	}
+</style>
+
 <script>
 function confirm() {
 	alert('are you sure?');
@@ -32,9 +52,11 @@ function confirm() {
 <form action="/proposals", method="post">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 {% for row in prop_row%}
-<p>{{ row[0] }} wants to meet you at {{ row[1] }} around {{ row[3] }} to have {{ row[2] }} 
+<p>{{ row[0] }} wants to meet you at {{ row[1] }} around {{ row[3] }} to have {{ row[2] }}
+	<label class="container">
 	<input type="radio" id = "accept" name="prop_id" value="accept {{row}}">accept
 	<input type="radio" id = "decline" name="prop_id" value="decline {{row}}">decline
+	</label>
 </p>
 
 {% endfor %}
