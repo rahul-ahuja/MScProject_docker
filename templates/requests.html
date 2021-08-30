@@ -2,6 +2,23 @@
 {% block title%}Displaying the requests{% endblock %}
 {% block body %}
 
+<style type="text/css">
+	.container input 
+	{
+  		cursor: pointer;	
+	}
+
+	p
+	{
+		font-style: italic;
+		color: black;
+	}
+
+	h1{
+		font-weight: bold;
+	}
+</style>
+
 <script>
 	document.addEventListener('DOMContentLoaded', function(){
 		document.querySelector('button').onclick = function(){
