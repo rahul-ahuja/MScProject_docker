@@ -6,6 +6,8 @@
 
 docker run --name {docker_container_name} -p 5432:5432 -e POSTGRES_USER={POSTGRES_USER} -e POSTGRES_PASSWORD={POSTGRES_PASSWORD} -d postgres
 
+docker start postgres #to rerun the docker postgres container
+
 #### create a role with the below command;
 
 python roles_setup.py
